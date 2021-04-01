@@ -3,6 +3,8 @@ name = "uriparser-sys"
 version = "0.1.0"
 authors = ["Marli Frost <marli@frost.red>"]
 edition = "2018"
+description = "bindings to the uriparser C library"
+license = "Unlicense AND BSD-3-Clause"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
