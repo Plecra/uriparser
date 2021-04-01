@@ -45,21 +45,17 @@ impl ParseError {
 }
 
 impl<'a> Uri<'a> {
-    pub unsafe fn parse(uri: *const u8) -> Result<Self, ParseError> {
+    pub fn parse(uri: &'a [u8]) -> Result<Self, ParseError> {
         let mut raw = Default::default();
         let mut errpos = ptr::null();
-        match unsafe { uriparser_sys::uriParseSingleUriA(&mut raw, uri as *const _, &mut errpos) } as u32
+        match unsafe { uriparser_sys::uriParseSingleUriExA(&mut raw, uri.as_ptr() as *const _, uri.as_ptr().add(uri.len()) as *const _, &mut errpos) } as u32
         {
             uriparser_sys::URI_SUCCESS => Ok(Self {
                 raw,
                 marker: core::marker::PhantomData,
             }),
-            err => Err(ParseError::from_code(err, errpos as usize - uri as usize)),
+            err => Err(ParseError::from_code(err, errpos as usize - uri.as_ptr() as usize)),
         }
-    }
-    pub fn parse_null_terminated_slice(uri: &'a [u8]) -> Result<Self, ParseError> {
-        assert_eq!(uri.last(), Some(&0));
-        unsafe { Self::parse(uri.as_ptr()) }
     }
     pub fn into_owned(mut self) -> Uri<'static> {
         unsafe {
