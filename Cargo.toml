@@ -1,6 +1,6 @@
 [package]
 name = "uriparser"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Marli Frost <marli@frost.red>"]
 edition = "2018"
 description = "An API wrapper for the uriparser library"
